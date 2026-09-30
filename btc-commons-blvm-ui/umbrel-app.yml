@@ -4,7 +4,7 @@ category: bitcoin
 name: BLVM UI
 version: "0.1.0"
 tagline: A live window into your Bitcoin node
-icon: https://raw.githubusercontent.com/Scrypty/BitcoinCommons_Umbrel_Community_Store/master/assets/btc-commons-blvm-ui/icon.svg
+icon: https://raw.githubusercontent.com/BTCDecoded/blvm-umbrel-store/main/assets/btc-commons-blvm-ui/icon.svg
 description: >-
   BLVM UI is the operator console from Bitcoin Commons. It connects to the Bitcoin node on your Umbrel and shows
   what it is doing, live, in one calm dashboard.
@@ -49,13 +49,13 @@ repo: https://github.com/BTCDecoded/blvm-ui
 support: https://github.com/BTCDecoded/blvm-ui/issues
 port: 3849
 gallery:
-  - https://raw.githubusercontent.com/Scrypty/BitcoinCommons_Umbrel_Community_Store/master/assets/btc-commons-blvm-ui/1.jpg
-  - https://raw.githubusercontent.com/Scrypty/BitcoinCommons_Umbrel_Community_Store/master/assets/btc-commons-blvm-ui/2.jpg
-  - https://raw.githubusercontent.com/Scrypty/BitcoinCommons_Umbrel_Community_Store/master/assets/btc-commons-blvm-ui/3.jpg
-  - https://raw.githubusercontent.com/Scrypty/BitcoinCommons_Umbrel_Community_Store/master/assets/btc-commons-blvm-ui/4.jpg
-  - https://raw.githubusercontent.com/Scrypty/BitcoinCommons_Umbrel_Community_Store/master/assets/btc-commons-blvm-ui/5.jpg
+  - https://raw.githubusercontent.com/BTCDecoded/blvm-umbrel-store/main/assets/btc-commons-blvm-ui/1.jpg
+  - https://raw.githubusercontent.com/BTCDecoded/blvm-umbrel-store/main/assets/btc-commons-blvm-ui/2.jpg
+  - https://raw.githubusercontent.com/BTCDecoded/blvm-umbrel-store/main/assets/btc-commons-blvm-ui/3.jpg
+  - https://raw.githubusercontent.com/BTCDecoded/blvm-umbrel-store/main/assets/btc-commons-blvm-ui/4.jpg
+  - https://raw.githubusercontent.com/BTCDecoded/blvm-umbrel-store/main/assets/btc-commons-blvm-ui/5.jpg
 path: ""
 defaultUsername: ""
 defaultPassword: ""
 submitter: Bitcoin Commons
-submission: https://github.com/Scrypty/BitcoinCommons_Umbrel_Community_Store
+submission: https://github.com/BTCDecoded/blvm-umbrel-store
