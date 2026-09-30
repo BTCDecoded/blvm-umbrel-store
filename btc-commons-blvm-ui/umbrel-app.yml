@@ -7,7 +7,8 @@ tagline: A live window into your Bitcoin node
 icon: https://raw.githubusercontent.com/BTCDecoded/blvm-umbrel-store/main/assets/btc-commons-blvm-ui/icon.svg
 description: >-
   BLVM UI is the operator console from Bitcoin Commons. It connects to the Bitcoin node on your Umbrel and shows
-  what it is doing, live, in one calm dashboard.
+  what it is doing, live, in one calm dashboard. It works with Bitcoin Node, Bitcoin Knots, or BLVM Node from
+  this store; pick which one when you install.
 
 
   Home shows sync progress, your local and network height, and a globe with your peers around the world. New

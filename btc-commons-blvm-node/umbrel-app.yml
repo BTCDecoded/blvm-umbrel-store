@@ -1,0 +1,50 @@
+manifestVersion: 1.1
+id: btc-commons-blvm-node
+implements:
+  - bitcoin
+category: bitcoin
+name: BLVM Node
+version: "main-506d1b5"
+tagline: The Bitcoin Commons full node, on testnet3
+icon: https://raw.githubusercontent.com/BTCDecoded/blvm-umbrel-store/main/assets/btc-commons-blvm-ui/icon.svg
+description: >-
+  BLVM is the Bitcoin full node from Bitcoin Commons, written in Rust. This app runs it on testnet3, the
+  long-running Bitcoin test network, so you can try it without real bitcoin at stake.
+
+
+  Open the app to see the BLVM console for this node: sync progress, peers on a globe, new blocks as they
+  arrive, node health, disk use, and peer controls.
+
+
+  Before you install:
+
+
+  - This is a development build from the latest BLVM source, for testing. Expect rough edges.
+
+
+  - The node downloads and verifies the whole testnet3 chain. That takes a long time and well over 100 GB of
+  disk space.
+
+
+  - Other Bitcoin apps can pick BLVM Node in place of Bitcoin Node, but only RPC and P2P are provided (no ZMQ
+  or Tor yet). BLVM UI works with it. Apps that need ZMQ, such as Electrs, will not.
+
+
+  RPC listens on port 18332 inside Umbrel with a generated username and password, which apps that depend on
+  it receive automatically.
+releaseNotes: ""
+developer: Bitcoin Commons
+website: https://thebitcoincommons.org
+dependencies: []
+repo: https://github.com/BTCDecoded/blvm
+support: https://github.com/BTCDecoded/blvm/issues
+port: 3850
+gallery:
+  - https://raw.githubusercontent.com/BTCDecoded/blvm-umbrel-store/main/assets/btc-commons-blvm-ui/2.jpg
+  - https://raw.githubusercontent.com/BTCDecoded/blvm-umbrel-store/main/assets/btc-commons-blvm-ui/1.jpg
+  - https://raw.githubusercontent.com/BTCDecoded/blvm-umbrel-store/main/assets/btc-commons-blvm-ui/4.jpg
+path: ""
+defaultUsername: ""
+defaultPassword: ""
+submitter: Bitcoin Commons
+submission: https://github.com/BTCDecoded/blvm-umbrel-store

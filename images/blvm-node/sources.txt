@@ -1,0 +1,11 @@
+# BTCDecoded repos (main) compiled into ghcr.io/btcdecoded/blvm-umbrel-node.
+# One line per repo: <name> <commit>. Bump a commit and rebuild to update the node.
+blvm 506d1b561f5b58f6db488492f9bc7c00968f9304
+blvm-node fde7e501db1cba6372665b97dcc70e5d5f61c5cf
+blvm-consensus 7dfe496ee9a6c4140e31863cf2fffba2a6096d61
+blvm-protocol b34852d26dc1fbe361e03656e46396bfac65d105
+blvm-primitives 96f79cec94d73121e5d666ebdf06ddf91e15b355
+blvm-secp256k1 a371cbf72d089df590b63f5c81a265ea45d63a45
+blvm-spec-lock 8fd77ab64cd486da59214146515d98c835fa1225
+blvm-muhash 04a58371ded2340ead3a8e1cf71a1d94bd8a4750
+blvm-sdk 27ee90d1a5b849c836474f3c0269694a69c286b7

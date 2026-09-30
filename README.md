@@ -13,7 +13,8 @@ A community app store for [umbrelOS](https://umbrel.com) with apps from [Bitcoin
 
 | App | What it is |
 |---|---|
-| [BLVM UI](btc-commons-blvm-ui/) | Live console for the Bitcoin node on your Umbrel: sync, peers on a globe, new blocks, health, disk use, and peer controls. Needs the Bitcoin Node app (or another app that provides `bitcoin`). |
+| [BLVM Node](btc-commons-blvm-node/) | The BLVM full node on testnet3, built from the latest BTCDecoded source, with the BLVM console as its page. Can stand in for Bitcoin Node (`implements: bitcoin`, RPC and P2P only). |
+| [BLVM UI](btc-commons-blvm-ui/) | Live console for the Bitcoin node on your Umbrel: sync, peers on a globe, new blocks, health, disk use, and peer controls. Works with Bitcoin Node, Knots, or BLVM Node. |
 
 ## Layout
 
@@ -24,6 +25,7 @@ btc-commons-<app>/                one folder per app; the folder name is the app
   docker-compose.yml              containers Umbrel runs for the app
   data/.gitkeep                   persistent data folder, mounted from ${APP_DATA_DIR}/data
 assets/btc-commons-<app>/         icon and gallery images (linked from umbrel-app.yml)
+images/blvm-node/                 how the BLVM Node image is built (see below)
 ```
 
 Everything under an app folder is copied onto every Umbrel that installs it, which is why images live in
@@ -54,6 +56,26 @@ You can check the digest and both architectures with:
 
 ```bash
 docker buildx imagetools inspect ghcr.io/btcdecoded/blvm-ui:0.1.1
+```
+
+## Building the BLVM Node image
+
+The node image is built here, not in the BLVM repos. `images/blvm-node/sources.txt` pins one commit per
+BTCDecoded repo (`blvm`, `blvm-node`, `blvm-consensus`, …); `fetch-sources.sh` checks them out into
+`images/blvm-node/src/` and applies any store-only fixes from `images/blvm-node/patches/<repo>/`.
+
+The **BLVM Node image** workflow runs on every push that touches `images/blvm-node/`. It builds amd64 and arm64
+natively on separate runners and pushes `ghcr.io/btcdecoded/blvm-umbrel-node:main-<blvm commit>`. The run summary
+prints the image and digest to paste into `btc-commons-blvm-node/docker-compose.yml`.
+
+To update the node: change the commits in `sources.txt` (`git ls-remote https://github.com/BTCDecoded/<repo>
+refs/heads/main`), push, wait for the workflow, then pin the new digest and bump `version` in the app's
+`umbrel-app.yml`.
+
+Local build (Docker or OrbStack):
+
+```bash
+cd images/blvm-node && ./fetch-sources.sh && docker build -t blvm-umbrel-node:local .
 ```
 
 ## Testing on a device

@@ -1,0 +1,39 @@
+version: "3.7"
+
+services:
+  app_proxy:
+    environment:
+      # The console below; the node itself has no web page.
+      APP_HOST: btc-commons-blvm-node_web_1
+      APP_PORT: 3849
+
+  node:
+    # Built by images/blvm-node in this repo from the BTCDecoded commits in sources.txt.
+    image: ghcr.io/btcdecoded/blvm-umbrel-node:REPLACE_WITH_TAG@sha256:REPLACE_WITH_IMAGE_DIGEST
+    user: "1000:1000"
+    init: true
+    restart: on-failure
+    stop_grace_period: 2m
+    volumes:
+      - ${APP_DATA_DIR}/data/blvm:/data
+    environment:
+      BLVM_NETWORK: ${APP_BTC_COMMONS_BLVM_NODE_NETWORK}
+      BLVM_RPC_PORT: ${APP_BTC_COMMONS_BLVM_NODE_RPC_PORT}
+      BLVM_P2P_PORT: ${APP_BTC_COMMONS_BLVM_NODE_P2P_PORT}
+      BLVM_RPC_USER: ${APP_BTC_COMMONS_BLVM_NODE_RPC_USER}
+      BLVM_RPC_PASS: ${APP_BTC_COMMONS_BLVM_NODE_RPC_PASS}
+
+  web:
+    image: ghcr.io/btcdecoded/blvm-ui:0.1.0@sha256:972c383729db1252aebfe5b79f4f0dc17a39033b865ce67711e35727a7dab060
+    user: "1000:1000"
+    init: true
+    restart: on-failure
+    stop_grace_period: 10s
+    volumes:
+      - ${APP_DATA_DIR}/data/ui:/data
+    environment:
+      BLVM_UI_LISTEN: 0.0.0.0:3849
+      BLVM_UI_STATE_DIR: /data
+      BLVM_UI_RPC: ${APP_BTC_COMMONS_BLVM_NODE_NODE_IP}:${APP_BTC_COMMONS_BLVM_NODE_RPC_PORT}
+      BLVM_UI_RPC_USER: ${APP_BTC_COMMONS_BLVM_NODE_RPC_USER}
+      BLVM_UI_RPC_PASS: ${APP_BTC_COMMONS_BLVM_NODE_RPC_PASS}

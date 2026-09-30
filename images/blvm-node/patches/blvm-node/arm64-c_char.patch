@@ -1,0 +1,89 @@
+diff --git a/src/node/parallel_ibd/memory.rs b/src/node/parallel_ibd/memory.rs
+index 445bbed..1653e1c 100644
+--- a/src/node/parallel_ibd/memory.rs
++++ b/src/node/parallel_ibd/memory.rs
+@@ -561,7 +561,7 @@ fn jemalloc_stats_snapshot() -> Option<JemallocStatsSnap> {
+     use std::os::raw::c_void;
+     unsafe extern "C" {
+         fn _rjem_mallctl(
+-            name: *const i8,
++            name: *const std::os::raw::c_char,
+             oldp: *mut c_void,
+             oldlenp: *mut usize,
+             newp: *mut c_void,
+@@ -683,7 +683,7 @@ pub(crate) fn maybe_purge_jemalloc_retained(reason: &str) -> bool {
+     use std::os::raw::c_void;
+     unsafe extern "C" {
+         fn _rjem_mallctl(
+-            name: *const i8,
++            name: *const std::os::raw::c_char,
+             oldp: *mut c_void,
+             oldlenp: *mut usize,
+             newp: *mut c_void,
+@@ -724,7 +724,7 @@ pub(crate) fn maybe_purge_jemalloc_retained(reason: &str) -> bool {
+         rcs.push((
+             "decay_all".into(),
+             _rjem_mallctl(
+-                decay_all.as_ptr() as *const i8,
++                decay_all.as_ptr() as *const std::os::raw::c_char,
+                 std::ptr::null_mut(),
+                 std::ptr::null_mut(),
+                 std::ptr::null_mut(),
+@@ -734,7 +734,7 @@ pub(crate) fn maybe_purge_jemalloc_retained(reason: &str) -> bool {
+         rcs.push((
+             "purge_all".into(),
+             _rjem_mallctl(
+-                purge_all.as_ptr() as *const i8,
++                purge_all.as_ptr() as *const std::os::raw::c_char,
+                 std::ptr::null_mut(),
+                 std::ptr::null_mut(),
+                 std::ptr::null_mut(),
+@@ -746,7 +746,7 @@ pub(crate) fn maybe_purge_jemalloc_retained(reason: &str) -> bool {
+         for i in 0..before.narenas.min(256) {
+             let decay = format!("arena.{i}.decay\0");
+             let _ = _rjem_mallctl(
+-                decay.as_ptr() as *const i8,
++                decay.as_ptr() as *const std::os::raw::c_char,
+                 std::ptr::null_mut(),
+                 std::ptr::null_mut(),
+                 std::ptr::null_mut(),
+@@ -754,7 +754,7 @@ pub(crate) fn maybe_purge_jemalloc_retained(reason: &str) -> bool {
+             );
+             let purge = format!("arena.{i}.purge\0");
+             let rc = _rjem_mallctl(
+-                purge.as_ptr() as *const i8,
++                purge.as_ptr() as *const std::os::raw::c_char,
+                 std::ptr::null_mut(),
+                 std::ptr::null_mut(),
+                 std::ptr::null_mut(),
+diff --git a/src/node/parallel_ibd/validation_loop_parts/scoreboard.rs b/src/node/parallel_ibd/validation_loop_parts/scoreboard.rs
+index 8201232..e74b992 100644
+--- a/src/node/parallel_ibd/validation_loop_parts/scoreboard.rs
++++ b/src/node/parallel_ibd/validation_loop_parts/scoreboard.rs
+@@ -1097,7 +1097,7 @@ pub fn run_validation_loop(params: ValidationParams) -> Result<()> {
+                     {
+                         use std::os::raw::c_void;
+                         unsafe extern "C" {
+-                            fn _rjem_mallctl(name: *const i8, oldp: *mut c_void, oldlenp: *mut usize, newp: *mut c_void, newlen: usize) -> i32;
++                            fn _rjem_mallctl(name: *const std::os::raw::c_char, oldp: *mut c_void, oldlenp: *mut usize, newp: *mut c_void, newlen: usize) -> i32;
+                         }
+                         unsafe {
+                             _rjem_mallctl(c"arena.4294967295.purge".as_ptr(),
+@@ -1399,7 +1399,7 @@ pub fn run_validation_loop(params: ValidationParams) -> Result<()> {
+                         let (jemalloc_allocated_mb, jemalloc_active_mb, jemalloc_resident_mb, jemalloc_retained_mb) = {
+                             use std::os::raw::c_void;
+                             unsafe extern "C" {
+-                                fn _rjem_mallctl(name: *const i8, oldp: *mut c_void, oldlenp: *mut usize, newp: *mut c_void, newlen: usize) -> i32;
++                                fn _rjem_mallctl(name: *const std::os::raw::c_char, oldp: *mut c_void, oldlenp: *mut usize, newp: *mut c_void, newlen: usize) -> i32;
+                             }
+                             unsafe {
+                                 // Refresh epoch to get up-to-date stats.
+@@ -2007,7 +2007,7 @@ pub fn run_validation_loop(params: ValidationParams) -> Result<()> {
+                                 use std::os::raw::c_void;
+                                 unsafe extern "C" {
+                                     fn _rjem_mallctl(
+-                                        name: *const i8,
++                                        name: *const std::os::raw::c_char,
+                                         oldp: *mut c_void,
+                                         oldlenp: *mut usize,
+                                         newp: *mut c_void,

@@ -1,0 +1,105 @@
+name: BLVM Node image
+
+# Builds ghcr.io/btcdecoded/blvm-umbrel-node for linux/amd64 + linux/arm64 from the
+# BTCDecoded commits in images/blvm-node/sources.txt (plus images/blvm-node/patches).
+# Each arch builds natively on its own runner, then the two are joined into one tag:
+#   main-<blvm commit>   and   latest
+on:
+  push:
+    branches: [main]
+    paths: ["images/blvm-node/**", ".github/workflows/blvm-node-image.yml"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+
+env:
+  IMAGE: ghcr.io/btcdecoded/blvm-umbrel-node
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: linux/amd64
+            runner: ubuntu-24.04
+            arch: amd64
+          - platform: linux/arm64
+            runner: ubuntu-24.04-arm
+            arch: arm64
+    runs-on: ${{ matrix.runner }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Fetch BTCDecoded sources
+        run: images/blvm-node/fetch-sources.sh
+
+      - uses: docker/setup-buildx-action@v3
+
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - id: build
+        uses: docker/build-push-action@v6
+        with:
+          context: images/blvm-node
+          platforms: ${{ matrix.platform }}
+          outputs: type=image,name=${{ env.IMAGE }},push-by-digest=true,name-canonical=true,push=true
+          cache-from: type=gha,scope=blvm-node-${{ matrix.arch }}
+          cache-to: type=gha,scope=blvm-node-${{ matrix.arch }},mode=max
+
+      - name: Save digest
+        run: |
+          mkdir -p /tmp/digests
+          touch "/tmp/digests/${DIGEST#sha256:}"
+        env:
+          DIGEST: ${{ steps.build.outputs.digest }}
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: digest-${{ matrix.arch }}
+          path: /tmp/digests/*
+          retention-days: 1
+
+  merge:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v4
+        with:
+          path: /tmp/digests
+          pattern: digest-*
+          merge-multiple: true
+
+      - uses: docker/setup-buildx-action@v3
+
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Tag both architectures
+        run: |
+          blvm=$(awk '$1=="blvm"{print substr($2,1,7)}' images/blvm-node/sources.txt)
+          tag="main-${blvm}"
+          cd /tmp/digests
+          docker buildx imagetools create \
+            -t "$IMAGE:$tag" -t "$IMAGE:latest" \
+            $(printf "$IMAGE@sha256:%s " *)
+          digest=$(docker buildx imagetools inspect "$IMAGE:$tag" --format '{{json .Manifest}}' | jq -r .digest)
+          {
+            echo "### Image"
+            echo '```'
+            echo "$IMAGE:$tag@$digest"
+            echo '```'
+            echo "Paste that into btc-commons-blvm-node/docker-compose.yml."
+          } >> "$GITHUB_STEP_SUMMARY"
+          docker buildx imagetools inspect "$IMAGE:$tag"
