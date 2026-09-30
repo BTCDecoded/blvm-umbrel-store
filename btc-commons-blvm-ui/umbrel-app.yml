@@ -1,0 +1,60 @@
+manifestVersion: 1
+id: btc-commons-blvm-ui
+category: bitcoin
+name: BLVM UI
+version: "0.1.0"
+tagline: A live window into your Bitcoin node
+icon: https://raw.githubusercontent.com/Scrypty/BitcoinCommons_Umbrel_Community_Store/main/assets/btc-commons-blvm-ui/icon.svg
+description: >-
+  BLVM UI is the operator console from Bitcoin Commons. It connects to the Bitcoin node on your Umbrel and shows
+  what it is doing, live, in one calm dashboard.
+
+
+  Home shows sync progress, your local and network height, and a globe with your peers around the world. New
+  blocks slide into the Latest Blocks rail the moment your node connects them. During initial sync they arrive
+  as ranges, so you can watch the chain fill in.
+
+
+  Insights gives you node health at a glance:
+
+
+  - Node status, uptime, version, and which chain you are on
+
+
+  - Inbound and outbound peers
+
+
+  - How much disk the blockchain uses and how much space is left
+
+
+  - Blocks received over the last 12 minutes
+
+
+  Network lists every connected peer with its address, direction, and software, and lets you add a peer,
+  disconnect one, block an address for 24 hours, or pause networking entirely.
+
+
+  BLVM UI never touches your wallet or funds. Apart from the peer controls on the Network page, it only reads
+  from your node.
+
+
+  Peer locations are country-level and looked up offline on your Umbrel. IP Geolocation by DB-IP
+  (https://db-ip.com), licensed under CC BY 4.0.
+releaseNotes: ""
+developer: Bitcoin Commons
+website: https://thebitcoincommons.org
+dependencies:
+  - bitcoin
+repo: https://github.com/BTCDecoded/blvm-ui
+support: https://github.com/BTCDecoded/blvm-ui/issues
+port: 3849
+gallery:
+  - https://raw.githubusercontent.com/Scrypty/BitcoinCommons_Umbrel_Community_Store/main/assets/btc-commons-blvm-ui/1.jpg
+  - https://raw.githubusercontent.com/Scrypty/BitcoinCommons_Umbrel_Community_Store/main/assets/btc-commons-blvm-ui/2.jpg
+  - https://raw.githubusercontent.com/Scrypty/BitcoinCommons_Umbrel_Community_Store/main/assets/btc-commons-blvm-ui/3.jpg
+  - https://raw.githubusercontent.com/Scrypty/BitcoinCommons_Umbrel_Community_Store/main/assets/btc-commons-blvm-ui/4.jpg
+path: ""
+defaultUsername: ""
+defaultPassword: ""
+submitter: Bitcoin Commons
+submission: https://github.com/Scrypty/BitcoinCommons_Umbrel_Community_Store

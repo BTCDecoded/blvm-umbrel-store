@@ -1,0 +1,26 @@
+version: "3.7"
+
+services:
+  app_proxy:
+    environment:
+      # <app-id>_<service-name>_1
+      APP_HOST: btc-commons-blvm-ui_web_1
+      APP_PORT: 3849
+
+  web:
+    # Set the digest from the "Docker image" workflow run in BTCDecoded/blvm-ui.
+    image: ghcr.io/btcdecoded/blvm-ui:0.1.0@sha256:REPLACE_WITH_IMAGE_DIGEST
+    user: "1000:1000"
+    init: true
+    restart: on-failure
+    stop_grace_period: 10s
+    volumes:
+      # Latest Blocks history (feeds.json)
+      - ${APP_DATA_DIR}/data:/data
+    environment:
+      BLVM_UI_LISTEN: 0.0.0.0:3849
+      BLVM_UI_STATE_DIR: /data
+      # The Bitcoin node app this depends on (Bitcoin Node, Knots, or anything that implements `bitcoin`).
+      BLVM_UI_RPC: ${APP_BITCOIN_NODE_IP}:${APP_BITCOIN_RPC_PORT}
+      BLVM_UI_RPC_USER: ${APP_BITCOIN_RPC_USER}
+      BLVM_UI_RPC_PASS: ${APP_BITCOIN_RPC_PASS}
