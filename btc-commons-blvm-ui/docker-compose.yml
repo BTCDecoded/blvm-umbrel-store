@@ -8,8 +8,8 @@ services:
       APP_PORT: 3849
 
   web:
-    # Multi-arch index digest (linux/amd64 + linux/arm64) of the v0.1.0 build.
-    image: ghcr.io/btcdecoded/blvm-ui:0.1.0@sha256:972c383729db1252aebfe5b79f4f0dc17a39033b865ce67711e35727a7dab060
+    # Multi-arch index digest (linux/amd64 + linux/arm64) of the v0.1.1 build.
+    image: ghcr.io/btcdecoded/blvm-ui:0.1.1@sha256:845b61bbb888306eb1e526be5a0c0aa6a83814097e7a1fd0442cb2de307241e0
     user: "1000:1000"
     init: true
     restart: on-failure

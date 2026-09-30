@@ -2,7 +2,7 @@ manifestVersion: 1
 id: btc-commons-blvm-ui
 category: bitcoin
 name: Commons UI
-version: "0.1.0"
+version: "0.1.1"
 tagline: A live window into your Bitcoin node
 icon: https://raw.githubusercontent.com/BTCDecoded/blvm-umbrel-store/main/assets/btc-commons-blvm-ui/icon.svg
 description: >-
@@ -41,7 +41,8 @@ description: >-
 
   Peer locations are country-level and looked up offline on your Umbrel. IP Geolocation by DB-IP
   (https://db-ip.com), licensed under CC BY 4.0.
-releaseNotes: ""
+releaseNotes: >-
+  BLVM UI is now called Commons UI.
 developer: Bitcoin Commons
 website: https://thebitcoincommons.org
 dependencies:
