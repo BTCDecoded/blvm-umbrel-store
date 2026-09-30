@@ -8,8 +8,8 @@ services:
       APP_PORT: 3849
 
   web:
-    # Set the digest from the "Docker image" workflow run in BTCDecoded/blvm-ui.
-    image: ghcr.io/btcdecoded/blvm-ui:0.1.0@sha256:REPLACE_WITH_IMAGE_DIGEST
+    # Multi-arch index digest (linux/amd64 + linux/arm64) of the v0.1.0 build.
+    image: ghcr.io/btcdecoded/blvm-ui:0.1.0@sha256:972c383729db1252aebfe5b79f4f0dc17a39033b865ce67711e35727a7dab060
     user: "1000:1000"
     init: true
     restart: on-failure
