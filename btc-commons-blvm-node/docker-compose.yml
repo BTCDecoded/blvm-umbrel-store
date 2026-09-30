@@ -9,7 +9,7 @@ services:
 
   node:
     # Built by images/blvm-node in this repo from the BTCDecoded commits in sources.txt.
-    image: ghcr.io/btcdecoded/blvm-umbrel-node:REPLACE_WITH_TAG@sha256:REPLACE_WITH_IMAGE_DIGEST
+    image: ghcr.io/btcdecoded/blvm-umbrel-node:main-506d1b5@sha256:c9c650735b92ad6c82d4ae2bf0e68ae5274ed4a4a94e1e229727de47e589fb74
     user: "1000:1000"
     init: true
     restart: on-failure
