@@ -13,8 +13,8 @@ A community app store for [umbrelOS](https://umbrel.com) with apps from [Bitcoin
 
 | App | What it is |
 |---|---|
-| [BLVM Node](btc-commons-blvm-node/) | The BLVM full node on testnet3, built from the latest BTCDecoded source, with the BLVM console as its page. Can stand in for Bitcoin Node (`implements: bitcoin`, RPC and P2P only). |
-| [BLVM UI](btc-commons-blvm-ui/) | Live console for the Bitcoin node on your Umbrel: sync, peers on a globe, new blocks, health, disk use, and peer controls. Works with Bitcoin Node, Knots, or BLVM Node. |
+| [BLVM Node](btc-commons-blvm-node/) | The BLVM full node on testnet3, built from the latest BTCDecoded source, with Commons UI as its page. Can stand in for Bitcoin Node (`implements: bitcoin`, RPC and P2P only). |
+| [Commons UI](btc-commons-blvm-ui/) | Live console for the Bitcoin node on your Umbrel: sync, peers on a globe, new blocks, health, disk use, and peer controls. Works with Bitcoin Node, Knots, or BLVM Node. |
 
 ## Layout
 
@@ -44,7 +44,7 @@ All user-facing text and images are in the app's `umbrel-app.yml`:
 Images are linked with `raw.githubusercontent.com` URLs, so this repository must be **public** for them (and the
 store itself) to load.
 
-## Releasing a new version of BLVM UI
+## Releasing a new version of Commons UI
 
 1. Tag the console: in `BTCDecoded/blvm-ui`, push a tag like `v0.1.1`. The **Docker image** workflow builds
    `linux/amd64` + `linux/arm64` and pushes `ghcr.io/btcdecoded/blvm-ui:0.1.1`. The run summary shows the digest.

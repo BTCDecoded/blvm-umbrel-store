@@ -1,12 +1,12 @@
 manifestVersion: 1
 id: btc-commons-blvm-ui
 category: bitcoin
-name: BLVM UI
+name: Commons UI
 version: "0.1.0"
 tagline: A live window into your Bitcoin node
 icon: https://raw.githubusercontent.com/BTCDecoded/blvm-umbrel-store/main/assets/btc-commons-blvm-ui/icon.svg
 description: >-
-  BLVM UI is the operator console from Bitcoin Commons. It connects to the Bitcoin node on your Umbrel and shows
+  Commons UI is the operator console from Bitcoin Commons. It connects to the Bitcoin node on your Umbrel and shows
   what it is doing, live, in one calm dashboard. It works with Bitcoin Node, Bitcoin Knots, or BLVM Node from
   this store; pick which one when you install.
 
@@ -35,7 +35,7 @@ description: >-
   disconnect one, block an address for 24 hours, or pause networking entirely.
 
 
-  BLVM UI never touches your wallet or funds. Apart from the peer controls on the Network page, it only reads
+  Commons UI never touches your wallet or funds. Apart from the peer controls on the Network page, it only reads
   from your node.
 
 

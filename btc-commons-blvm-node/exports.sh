@@ -1,5 +1,5 @@
 # BLVM Node on testnet3. Sourced by Umbrel for this app and for apps that depend on `bitcoin`
-# and picked BLVM Node as their provider (for example BLVM UI).
+# and picked BLVM Node as their provider (for example Commons UI).
 
 export APP_BTC_COMMONS_BLVM_NODE_NODE_IP="btc-commons-blvm-node_node_1"
 export APP_BTC_COMMONS_BLVM_NODE_RPC_PORT="18332"

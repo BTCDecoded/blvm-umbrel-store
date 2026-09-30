@@ -12,7 +12,7 @@ description: >-
   long-running Bitcoin test network, so you can try it without real bitcoin at stake.
 
 
-  Open the app to see the BLVM console for this node: sync progress, peers on a globe, new blocks as they
+  Open the app to see Commons UI, the Bitcoin Commons console, for this node: sync progress, peers on a globe, new blocks as they
   arrive, node health, disk use, and peer controls.
 
 
@@ -27,7 +27,7 @@ description: >-
 
 
   - Other Bitcoin apps can pick BLVM Node in place of Bitcoin Node, but only RPC and P2P are provided (no ZMQ
-  or Tor yet). BLVM UI works with it. Apps that need ZMQ, such as Electrs, will not.
+  or Tor yet). Commons UI works with it. Apps that need ZMQ, such as Electrs, will not.
 
 
   RPC listens on port 18332 inside Umbrel with a generated username and password, which apps that depend on
