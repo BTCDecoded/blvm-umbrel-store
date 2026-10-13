@@ -1,0 +1,72 @@
+manifestVersion: 1
+id: btc-commons-node-view
+storage:
+  dataRoot: data
+category: bitcoin
+name: Commons Node View
+version: "0.2.0"
+tagline: Set up and run a Bitcoin node from one page
+icon: https://raw.githubusercontent.com/BTCDecoded/blvm-umbrel-store/main/assets/btc-commons-node-view/icon.svg
+description: >-
+  Commons Node View installs and runs a Bitcoin full node for you, and shows you what it is doing. One download, no
+  command line: open the app and a short guided setup walks you through it.
+
+
+  How it works:
+
+
+  - Pick a network. Mainnet is the real Bitcoin network (about 800 GB, days to sync). Signet and Testnet4 are free
+  practice networks with no real value, and much smaller.
+
+  - When you choose, the app downloads the node program from the official Bitcoin Commons release on GitHub, checks
+  it against the published checksums, and starts it. Nothing is bundled that you did not ask for.
+
+  - Switch to another network any time. The node stops cleanly, every network keeps its own data, and switching
+  back picks up where it stopped.
+
+  - New node releases and optional add-on modules (for example Stratum V2 mining) are installed from the same page,
+  when you decide.
+
+
+  The home page shows sync progress, your height against the network, and a globe with your peers. Other pages
+  list peers, show the node's log, and hold the settings.
+
+
+  Before you install:
+
+
+  - Disk space: Mainnet needs about 800 GB, Testnet3 over 100 GB. The app warns you when a switch would not fit.
+
+  - Network ports: the node accepts incoming connections on the standard Bitcoin ports (8333, 18333, 48333, 38333
+  and 18444). If another app already uses one of them, for example Bitcoin Node on 8333, stop that app first.
+
+  - This is early software from Bitcoin Commons. Expect rough edges and report them.
+
+
+  Commons Node View never touches your wallet or funds. Peer locations are country-level and looked up offline on
+  your Umbrel. IP Geolocation by DB-IP (https://db-ip.com), licensed under CC BY 4.0.
+releaseNotes: >-
+  Commons UI and BLVM Node are now one app, Commons Node View. It has a guided setup, downloads the official
+  Bitcoin Commons node release when you pick a network, lets you switch between Mainnet, Testnet3, Testnet4, Signet
+  and Regtest with each network's data kept, and shows the node's log and status.
+
+
+  This is a new app, not an update of Commons UI or BLVM Node. Those two keep running if you have them installed, but
+  they no longer get updates and their data does not carry over.
+developer: Bitcoin Commons
+website: https://thebitcoincommons.org
+dependencies: []
+repo: https://github.com/BTCDecoded/blvm-ui
+support: https://github.com/BTCDecoded/blvm-ui/issues
+port: 3849
+gallery:
+  - https://raw.githubusercontent.com/BTCDecoded/blvm-umbrel-store/main/assets/btc-commons-node-view/1.jpg
+  - https://raw.githubusercontent.com/BTCDecoded/blvm-umbrel-store/main/assets/btc-commons-node-view/2.jpg
+  - https://raw.githubusercontent.com/BTCDecoded/blvm-umbrel-store/main/assets/btc-commons-node-view/3.jpg
+  - https://raw.githubusercontent.com/BTCDecoded/blvm-umbrel-store/main/assets/btc-commons-node-view/4.jpg
+  - https://raw.githubusercontent.com/BTCDecoded/blvm-umbrel-store/main/assets/btc-commons-node-view/5.jpg
+path: ""
+defaultUsername: ""
+defaultPassword: ""
+submitter: Bitcoin Commons
+submission: https://github.com/BTCDecoded/blvm-umbrel-store
