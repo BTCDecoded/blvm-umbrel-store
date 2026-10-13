@@ -1,0 +1,78 @@
+version: "3.7"
+
+# One app, two containers from the SAME image, one shared data folder:
+#   web    the console (setup walkthrough, status, settings, logs)
+#   agent  runs the node: starts, stops and switches it (the web container downloads the release you picked into
+#          /data/bin; the agent only runs it). The node lives inside this container: restarting the container
+#          restarts the node, and a node that the agent cannot stop is killed with the container.
+# The web container can restart or be updated without touching the node, and the other way round.
+
+services:
+  app_proxy:
+    environment:
+      # <app-id>_<service-name>_1
+      APP_HOST: btc-commons-node-view_web_1
+      APP_PORT: 3849
+
+  web:
+    image: ghcr.io/btcdecoded/blvm-ui:0.2.0@sha256:49f308d5792bb41c66c4d739d80ea85e254d7f7b72c8c61179f72306ce312fbe
+    user: "1000:1000"
+    init: true
+    restart: on-failure
+    stop_grace_period: 30s
+    depends_on:
+      - agent
+    volumes:
+      # Everything that must survive: console.json, Latest Blocks history, node binaries, chain data, logs.
+      - ${APP_DATA_DIR}/data:/data
+    environment:
+      BLVM_UI_LISTEN: 0.0.0.0:3849
+      BLVM_UI_MODE: managed
+      BLVM_UI_AGENT: external
+      BLVM_UI_DATA_ROOT: /data
+      BLVM_UI_STATE_DIR: /data
+      # The node runs in the agent container; this is how the console finds its RPC.
+      BLVM_UI_NODE_HOST: btc-commons-node-view_agent_1
+      BLVM_UI_RPC_USER: ${APP_BTC_COMMONS_NODE_VIEW_RPC_USER}
+      BLVM_UI_RPC_PASS: ${APP_BTC_COMMONS_NODE_VIEW_RPC_PASS}
+      # Every name the browser or the Umbrel proxy uses to reach the console (no ports).
+      BLVM_UI_ALLOWED_HOSTS: ${APP_DOMAIN},${DEVICE_DOMAIN_NAME},${DEVICE_HOSTNAME},btc-commons-node-view_web_1
+      # The console may download node releases itself (instead of only saying "update in the App Store"). Add-on modules are not downloaded yet.
+      BLVM_UI_UPDATES: 1
+
+  agent:
+    # Same image as web.
+    image: ghcr.io/btcdecoded/blvm-ui:0.2.0@sha256:49f308d5792bb41c66c4d739d80ea85e254d7f7b72c8c61179f72306ce312fbe
+    command: ["agent", "--root", "/data"]
+    user: "1000:1000"
+    init: true
+    restart: on-failure
+    # The agent waits up to 200 s for the node to flush its chain state after SIGTERM; give Docker a margin
+    # so it never SIGKILLs the agent while the node is still saving.
+    stop_grace_period: 240s
+    # The agent has no web page; the image's HTTP health check does not apply.
+    healthcheck:
+      disable: true
+    volumes:
+      - ${APP_DATA_DIR}/data:/data
+    # P2P for every network the console can switch to. Ports are fixed in this file, the network is chosen in the
+    # app, so all five are open; only the chosen network's port has a node behind it. RPC ports are NOT published.
+    ports:
+      - "${APP_BTC_COMMONS_NODE_VIEW_P2P_PORT_MAINNET}:${APP_BTC_COMMONS_NODE_VIEW_P2P_PORT_MAINNET}"
+      - "${APP_BTC_COMMONS_NODE_VIEW_P2P_PORT_TESTNET3}:${APP_BTC_COMMONS_NODE_VIEW_P2P_PORT_TESTNET3}"
+      - "${APP_BTC_COMMONS_NODE_VIEW_P2P_PORT_TESTNET4}:${APP_BTC_COMMONS_NODE_VIEW_P2P_PORT_TESTNET4}"
+      - "${APP_BTC_COMMONS_NODE_VIEW_P2P_PORT_SIGNET}:${APP_BTC_COMMONS_NODE_VIEW_P2P_PORT_SIGNET}"
+      - "${APP_BTC_COMMONS_NODE_VIEW_P2P_PORT_REGTEST}:${APP_BTC_COMMONS_NODE_VIEW_P2P_PORT_REGTEST}"
+    environment:
+      BLVM_UI_MODE: managed
+      BLVM_UI_DATA_ROOT: /data
+      BLVM_UI_STATE_DIR: /data
+      # The node's RPC must be reachable from the web container, not only from localhost. Every app on Umbrel's
+      # shared Docker network could reach it too, so it only answers with the login below: the agent writes it
+      # into the node's own config file (<data>/networks/<network>/blvm.toml, mode 0600, [rpc_auth] required)
+      # before every start, because the node reads no environment variable for it. The web container sends the
+      # same login (BLVM_UI_RPC_USER / BLVM_UI_RPC_PASS above). Without both values the agent refuses to start the
+      # node, and it stops a node that still answers without a password.
+      BLVM_AGENT_RPC_BIND: 0.0.0.0
+      BLVM_RPC_USER: ${APP_BTC_COMMONS_NODE_VIEW_RPC_USER}
+      BLVM_RPC_PASS: ${APP_BTC_COMMONS_NODE_VIEW_RPC_PASS}
