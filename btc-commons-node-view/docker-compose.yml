@@ -39,7 +39,7 @@ services:
       BLVM_UI_RPC_PASS: ${APP_BTC_COMMONS_NODE_VIEW_RPC_PASS}
       # Every name the browser or the Umbrel proxy uses to reach the console (no ports).
       BLVM_UI_ALLOWED_HOSTS: ${APP_DOMAIN},${DEVICE_DOMAIN_NAME},${DEVICE_HOSTNAME},btc-commons-node-view_web_1
-      # The console may download node releases and modules itself (instead of only saying "update in the App Store").
+      # The console may download node releases itself (instead of only saying "update in the App Store"). Add-on modules are not downloaded yet.
       BLVM_UI_UPDATES: 1
 
   agent:
