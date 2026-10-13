@@ -4,7 +4,7 @@ storage:
   dataRoot: data
 category: bitcoin
 name: Commons Node View
-version: "0.2.0"
+version: "0.2.2"
 tagline: Set up and run a Bitcoin node from one page
 icon: https://raw.githubusercontent.com/BTCDecoded/commons-umbrel-store/main/assets/btc-commons-node-view/icon.svg
 description: >-
@@ -49,17 +49,20 @@ description: >-
   Commons Node View never touches your wallet or funds. Peer locations are country-level and looked up offline on
   your Umbrel. IP Geolocation by DB-IP (https://db-ip.com), licensed under CC BY 4.0.
 releaseNotes: >-
-  Commons UI and BLVM Node are now one app, Commons Node View. It has a guided setup, downloads the official
-  Bitcoin Commons node release when you pick a network, lets you switch between Mainnet, Testnet3, Testnet4, Signet
-  and Regtest with each network's data kept, and shows the node's log and status.
+  The sidebar now shows only Home, Network and Settings. Module pages appear together with their module, and the Logs
+  page can be turned on with a switch in Settings.
 
 
-  This is a new app, not an update of Commons UI or BLVM Node.
+  The Logs page now shows the node's own output.
 
 
-  If you have Commons UI installed, uninstall it first: both apps use port 3849. If Bitcoin Node is running, Commons
-  Node View cannot start, whichever network you pick, because both use port 8333: stop Bitcoin Node first. BLVM Node
-  can stay, but it gets no more updates and its data does not carry over.
+  Chain size is now measured from the data folder (the node's own figure is only an estimate).
+
+
+  Existing installs keep their settings and data.
+
+
+  Version 0.2.1 was skipped: it reported the wrong version number inside the app.
 developer: Bitcoin Commons
 website: https://thebitcoincommons.org
 dependencies: []

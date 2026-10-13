@@ -15,7 +15,7 @@ services:
       APP_PORT: 3849
 
   web:
-    image: ghcr.io/btcdecoded/blvm-ui:0.2.0@sha256:49f308d5792bb41c66c4d739d80ea85e254d7f7b72c8c61179f72306ce312fbe
+    image: ghcr.io/btcdecoded/blvm-ui:0.2.2@sha256:145c699a6f4c970f5728f83c88dbdc29d15b13bac7b8ab1aecf0b22c55a25fee
     user: "1000:1000"
     init: true
     restart: on-failure
@@ -42,7 +42,7 @@ services:
 
   agent:
     # Same image as web.
-    image: ghcr.io/btcdecoded/blvm-ui:0.2.0@sha256:49f308d5792bb41c66c4d739d80ea85e254d7f7b72c8c61179f72306ce312fbe
+    image: ghcr.io/btcdecoded/blvm-ui:0.2.2@sha256:145c699a6f4c970f5728f83c88dbdc29d15b13bac7b8ab1aecf0b22c55a25fee
     command: ["agent", "--root", "/data"]
     user: "1000:1000"
     init: true
