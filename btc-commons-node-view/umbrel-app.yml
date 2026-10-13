@@ -6,7 +6,7 @@ category: bitcoin
 name: Commons Node View
 version: "0.2.0"
 tagline: Set up and run a Bitcoin node from one page
-icon: https://raw.githubusercontent.com/BTCDecoded/blvm-umbrel-store/main/assets/btc-commons-node-view/icon.svg
+icon: https://raw.githubusercontent.com/BTCDecoded/commons-umbrel-store/main/assets/btc-commons-node-view/icon.svg
 description: >-
   Commons Node View installs and runs a Bitcoin full node for you, and shows you what it is doing. One download, no
   command line: open the app and a short guided setup walks you through it.
@@ -67,13 +67,13 @@ repo: https://github.com/BTCDecoded/blvm-ui
 support: https://github.com/BTCDecoded/blvm-ui/issues
 port: 3849
 gallery:
-  - https://raw.githubusercontent.com/BTCDecoded/blvm-umbrel-store/main/assets/btc-commons-node-view/1.jpg
-  - https://raw.githubusercontent.com/BTCDecoded/blvm-umbrel-store/main/assets/btc-commons-node-view/2.jpg
-  - https://raw.githubusercontent.com/BTCDecoded/blvm-umbrel-store/main/assets/btc-commons-node-view/3.jpg
-  - https://raw.githubusercontent.com/BTCDecoded/blvm-umbrel-store/main/assets/btc-commons-node-view/4.jpg
-  - https://raw.githubusercontent.com/BTCDecoded/blvm-umbrel-store/main/assets/btc-commons-node-view/5.jpg
+  - https://raw.githubusercontent.com/BTCDecoded/commons-umbrel-store/main/assets/btc-commons-node-view/1.jpg
+  - https://raw.githubusercontent.com/BTCDecoded/commons-umbrel-store/main/assets/btc-commons-node-view/2.jpg
+  - https://raw.githubusercontent.com/BTCDecoded/commons-umbrel-store/main/assets/btc-commons-node-view/3.jpg
+  - https://raw.githubusercontent.com/BTCDecoded/commons-umbrel-store/main/assets/btc-commons-node-view/4.jpg
+  - https://raw.githubusercontent.com/BTCDecoded/commons-umbrel-store/main/assets/btc-commons-node-view/5.jpg
 path: ""
 defaultUsername: ""
 defaultPassword: ""
 submitter: Bitcoin Commons
-submission: https://github.com/BTCDecoded/blvm-umbrel-store
+submission: https://github.com/BTCDecoded/commons-umbrel-store

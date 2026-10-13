@@ -6,7 +6,7 @@ A community app store for [umbrelOS](https://umbrel.com) with apps from [Bitcoin
 
 1. Open the **App Store** in umbrelOS.
 2. Click **⋯** (top right) → **Community App Stores**.
-3. Paste `https://github.com/BTCDecoded/blvm-umbrel-store` and click **Add**.
+3. Paste `https://github.com/BTCDecoded/commons-umbrel-store` and click **Add**.
 4. Open **Bitcoin Commons App Store** and install **Commons Node View**.
 
 ## Apps
