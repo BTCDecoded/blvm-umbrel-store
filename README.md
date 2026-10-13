@@ -22,13 +22,14 @@ One app, two containers started from the same image (`ghcr.io/btcdecoded/blvm-ui
 ```
 Umbrel app  btc-commons-node-view
 ├─ web    the console (setup walkthrough, status, settings, logs)         port 3849 behind Umbrel's login
-└─ agent  runs the node: downloads, starts, stops, switches networks      publishes the five P2P ports
+└─ agent  runs the node: starts, stops, switches networks                publishes the five P2P ports
         shared:  ${APP_DATA_DIR}/data  ->  /data
 ```
 
-- The **node program is not in the image.** When you pick a network in the setup, the console asks the agent to download
-  the official `blvm` release for your CPU (Linux x86_64 or aarch64) from `github.com/BTCDecoded/blvm`, checks it against
-  the release's `checksums.sha256`, and installs it under `/data/bin`. New releases are installed the same way, when you
+- The **node program is not in the image.** When you pick a network in the setup, the console (the web container)
+  downloads the official `blvm` release for your CPU (Linux x86_64 or aarch64) from `github.com/BTCDecoded/blvm`, checks
+  it against the release's published `checksums.sha256` (releases are not signed yet), and installs it under
+  `/data/bin`; the agent then runs it. New releases are installed the same way, when you
   click, so Umbrel's app version and the node version are independent.
 - **Everything that must survive** (your choices, each network's chain data and logs, node binaries, modules) lives in
   `/data`, which is Umbrel's app data folder. App updates and restarts replace the containers, never the data.
@@ -36,8 +37,13 @@ Umbrel app  btc-commons-node-view
   down. Stopping the app stops the agent, which asks the node to finish saving first (up to 4 minutes).
 - Only the P2P ports are open to the network (8333 mainnet, 18333 testnet3, 48333 testnet4, 38333 signet, 18444 regtest),
   because Umbrel fixes ports in `docker-compose.yml` and the network is chosen later in the app. The node's RPC port is
-  not published; only the console reaches it, with a password derived from your Umbrel's seed.
-- If another app already uses one of those ports (Umbrel's Bitcoin Node uses 8333), stop it before starting this app.
+  not published, and it answers only with a password derived from your Umbrel's seed: the agent writes it into the
+  node's own config file before every start, and the console sends the same password.
+- The node runs **inside the agent container**. Restarting that container (or stopping the app) restarts the node, and
+  a node that was already running is only taken over again when the agent process restarts inside a running container.
+  If you stop the node in the app, it stays stopped after an app restart, an app update or a reboot.
+- If another app already uses one of those ports (Umbrel's Bitcoin Node uses 8333), this app cannot start until you
+  stop that app, whichever network you pick.
 
 Source of the image: [`BTCDecoded/blvm-ui`](https://github.com/BTCDecoded/blvm-ui) (`Dockerfile`, one multi-arch build).
 More notes on what was checked against Umbrel's rules: [`btc-commons-node-view/NOTES.md`](btc-commons-node-view/NOTES.md).
@@ -47,8 +53,15 @@ More notes on what was checked against Umbrel's rules: [`btc-commons-node-view/N
 This store used to list **Commons UI** (`btc-commons-blvm-ui`, a console for another node) and **BLVM Node**
 (`btc-commons-blvm-node`, testnet3 only, built from source in this repository). Both were replaced by Commons Node View
 and removed from the store. Their files, the node image build and its workflow are in this repository's git history.
-An Umbrel that already has either app keeps it running, but it receives no updates and its data does not carry over to
-the new app (a different app ID means a different data folder).
+**If you have Commons UI installed, uninstall it before you install Commons Node View:** both use port 3849. An Umbrel
+that has BLVM Node keeps it running, but it receives no updates and its data does not carry over to the new app (a
+different app ID means a different data folder).
+
+## Running the image without Umbrel
+
+The 0.2.0 console checks the `Host` header of every request. The old Commons UI 0.1.1 did not, so a compose file written
+for it answers 403 on every request until `BLVM_UI_ALLOWED_HOSTS` lists the names you use to open it. Umbrel users are
+not affected: the old apps stay pinned to 0.1.1.
 
 ## Layout
 

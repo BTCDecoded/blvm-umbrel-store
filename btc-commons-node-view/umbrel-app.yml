@@ -19,13 +19,13 @@ description: >-
   practice networks with no real value, and much smaller.
 
   - When you choose, the app downloads the node program from the official Bitcoin Commons release on GitHub, checks
-  it against the published checksums, and starts it. Nothing is bundled that you did not ask for.
+  it against the release's published checksum (releases are not signed yet), and starts it. Nothing is bundled that
+  you did not ask for.
 
   - Switch to another network any time. The node stops cleanly, every network keeps its own data, and switching
   back picks up where it stopped.
 
-  - New node releases and optional add-on modules (for example Stratum V2 mining) are installed from the same page,
-  when you decide.
+  - New node releases are installed from the same page, when you decide. Add-on modules will follow.
 
 
   The home page shows sync progress, your height against the network, and a globe with your peers. Other pages
@@ -37,8 +37,11 @@ description: >-
 
   - Disk space: Mainnet needs about 800 GB, Testnet3 over 100 GB. The app warns you when a switch would not fit.
 
-  - Network ports: the node accepts incoming connections on the standard Bitcoin ports (8333, 18333, 48333, 38333
-  and 18444). If another app already uses one of them, for example Bitcoin Node on 8333, stop that app first.
+  - Network ports: the app uses the standard Bitcoin ports (8333, 18333, 48333, 38333 and 18444). If another app
+  already uses one of them, for example Bitcoin Node on 8333, Commons Node View cannot start until you stop that app.
+
+  - The old Commons UI app uses the same web port (3849). If you have it installed, uninstall it before you install
+  this one.
 
   - This is early software from Bitcoin Commons. Expect rough edges and report them.
 
@@ -51,8 +54,12 @@ releaseNotes: >-
   and Regtest with each network's data kept, and shows the node's log and status.
 
 
-  This is a new app, not an update of Commons UI or BLVM Node. Those two keep running if you have them installed, but
-  they no longer get updates and their data does not carry over.
+  This is a new app, not an update of Commons UI or BLVM Node.
+
+
+  If you have Commons UI installed, uninstall it first: both apps use port 3849. If Bitcoin Node is running, Commons
+  Node View cannot start, whichever network you pick, because both use port 8333: stop Bitcoin Node first. BLVM Node
+  can stay, but it gets no more updates and its data does not carry over.
 developer: Bitcoin Commons
 website: https://thebitcoincommons.org
 dependencies: []

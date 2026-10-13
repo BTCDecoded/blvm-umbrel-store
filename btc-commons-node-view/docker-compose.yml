@@ -2,7 +2,9 @@ version: "3.7"
 
 # One app, two containers from the SAME image, one shared data folder:
 #   web    the console (setup walkthrough, status, settings, logs)
-#   agent  runs the node: downloads the release you picked into /data/bin, starts, stops and switches it
+#   agent  runs the node: starts, stops and switches it (the web container downloads the release you picked into
+#          /data/bin; the agent only runs it). The node lives inside this container: restarting the container
+#          restarts the node, and a node that the agent cannot stop is killed with the container.
 # The web container can restart or be updated without touching the node, and the other way round.
 
 services:
@@ -67,7 +69,12 @@ services:
       BLVM_UI_MODE: managed
       BLVM_UI_DATA_ROOT: /data
       BLVM_UI_STATE_DIR: /data
-      # The node's RPC must be reachable from the web container, not only from localhost.
+      # The node's RPC must be reachable from the web container, not only from localhost. Every app on Umbrel's
+      # shared Docker network could reach it too, so it only answers with the login below: the agent writes it
+      # into the node's own config file (<data>/networks/<network>/blvm.toml, mode 0600, [rpc_auth] required)
+      # before every start, because the node reads no environment variable for it. The web container sends the
+      # same login (BLVM_UI_RPC_USER / BLVM_UI_RPC_PASS above). Without both values the agent refuses to start the
+      # node, and it stops a node that still answers without a password.
       BLVM_AGENT_RPC_BIND: 0.0.0.0
       BLVM_RPC_USER: ${APP_BTC_COMMONS_NODE_VIEW_RPC_USER}
       BLVM_RPC_PASS: ${APP_BTC_COMMONS_NODE_VIEW_RPC_PASS}
