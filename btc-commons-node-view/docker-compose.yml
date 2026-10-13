@@ -15,9 +15,7 @@ services:
       APP_PORT: 3849
 
   web:
-    # PIN (run scripts/pin-digest.sh once ghcr.io/btcdecoded/blvm-ui:0.2.0 is published):
-    #   ghcr.io/btcdecoded/blvm-ui:0.2.0@sha256:TODO-fill-after-blvm-ui-release
-    image: ghcr.io/btcdecoded/blvm-ui:0.2.0
+    image: ghcr.io/btcdecoded/blvm-ui:0.2.0@sha256:49f308d5792bb41c66c4d739d80ea85e254d7f7b72c8c61179f72306ce312fbe
     user: "1000:1000"
     init: true
     restart: on-failure
@@ -44,7 +42,7 @@ services:
 
   agent:
     # Same image as web.
-    image: ghcr.io/btcdecoded/blvm-ui:0.2.0
+    image: ghcr.io/btcdecoded/blvm-ui:0.2.0@sha256:49f308d5792bb41c66c4d739d80ea85e254d7f7b72c8c61179f72306ce312fbe
     command: ["agent", "--root", "/data"]
     user: "1000:1000"
     init: true
