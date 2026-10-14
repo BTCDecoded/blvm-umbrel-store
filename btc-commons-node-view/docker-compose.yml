@@ -15,7 +15,7 @@ services:
       APP_PORT: 3849
 
   web:
-    image: ghcr.io/btcdecoded/blvm-ui:0.2.2@sha256:145c699a6f4c970f5728f83c88dbdc29d15b13bac7b8ab1aecf0b22c55a25fee
+    image: ghcr.io/btcdecoded/blvm-ui:0.2.3@sha256:cf77f454d5835846b57a7af9c95e9c34417143fed65c4db479f989790b8aa3a1
     user: "1000:1000"
     init: true
     restart: on-failure
@@ -39,10 +39,16 @@ services:
       BLVM_UI_ALLOWED_HOSTS: ${APP_DOMAIN},${DEVICE_DOMAIN_NAME},${DEVICE_HOSTNAME},btc-commons-node-view_web_1
       # The console may download node releases itself (instead of only saying "update in the App Store"). Add-on modules are not downloaded yet.
       BLVM_UI_UPDATES: 1
+      # The P2P port of each network, the same values as the agent below (the pages print the port the node uses).
+      BLVM_AGENT_P2P_PORT_MAINNET: ${APP_BTC_COMMONS_NODE_VIEW_P2P_PORT_MAINNET}
+      BLVM_AGENT_P2P_PORT_TESTNET4: ${APP_BTC_COMMONS_NODE_VIEW_P2P_PORT_TESTNET4}
+      BLVM_AGENT_P2P_PORT_TESTNET: ${APP_BTC_COMMONS_NODE_VIEW_P2P_PORT_TESTNET3}
+      BLVM_AGENT_P2P_PORT_SIGNET: ${APP_BTC_COMMONS_NODE_VIEW_P2P_PORT_SIGNET}
+      BLVM_AGENT_P2P_PORT_REGTEST: ${APP_BTC_COMMONS_NODE_VIEW_P2P_PORT_REGTEST}
 
   agent:
     # Same image as web.
-    image: ghcr.io/btcdecoded/blvm-ui:0.2.2@sha256:145c699a6f4c970f5728f83c88dbdc29d15b13bac7b8ab1aecf0b22c55a25fee
+    image: ghcr.io/btcdecoded/blvm-ui:0.2.3@sha256:cf77f454d5835846b57a7af9c95e9c34417143fed65c4db479f989790b8aa3a1
     command: ["agent", "--root", "/data"]
     user: "1000:1000"
     init: true
@@ -57,6 +63,8 @@ services:
       - ${APP_DATA_DIR}/data:/data
     # P2P for every network the console can switch to. Ports are fixed in this file, the network is chosen in the
     # app, so all five are open; only the chosen network's port has a node behind it. RPC ports are NOT published.
+    # The container port equals the host port, and the node is told to listen on it (BLVM_AGENT_P2P_PORT_*
+    # below). Mainnet is not on 8333: Umbrel's own Bitcoin Node publishes that one (see exports.sh).
     ports:
       - "${APP_BTC_COMMONS_NODE_VIEW_P2P_PORT_MAINNET}:${APP_BTC_COMMONS_NODE_VIEW_P2P_PORT_MAINNET}"
       - "${APP_BTC_COMMONS_NODE_VIEW_P2P_PORT_TESTNET3}:${APP_BTC_COMMONS_NODE_VIEW_P2P_PORT_TESTNET3}"
@@ -76,3 +84,10 @@ services:
       BLVM_AGENT_RPC_BIND: 0.0.0.0
       BLVM_RPC_USER: ${APP_BTC_COMMONS_NODE_VIEW_RPC_USER}
       BLVM_RPC_PASS: ${APP_BTC_COMMONS_NODE_VIEW_RPC_PASS}
+      # The node listens on the published port of its network (0.0.0.0:<port>), so a port can change here
+      # without a new image. Same names as the exports below; Testnet3's id in the console is "testnet".
+      BLVM_AGENT_P2P_PORT_MAINNET: ${APP_BTC_COMMONS_NODE_VIEW_P2P_PORT_MAINNET}
+      BLVM_AGENT_P2P_PORT_TESTNET4: ${APP_BTC_COMMONS_NODE_VIEW_P2P_PORT_TESTNET4}
+      BLVM_AGENT_P2P_PORT_TESTNET: ${APP_BTC_COMMONS_NODE_VIEW_P2P_PORT_TESTNET3}
+      BLVM_AGENT_P2P_PORT_SIGNET: ${APP_BTC_COMMONS_NODE_VIEW_P2P_PORT_SIGNET}
+      BLVM_AGENT_P2P_PORT_REGTEST: ${APP_BTC_COMMONS_NODE_VIEW_P2P_PORT_REGTEST}

@@ -4,7 +4,7 @@ storage:
   dataRoot: data
 category: bitcoin
 name: Commons Node View
-version: "0.2.2"
+version: "0.2.3"
 tagline: Set up and run a Bitcoin node from one page
 icon: https://raw.githubusercontent.com/BTCDecoded/commons-umbrel-store/main/assets/btc-commons-node-view/icon.svg
 description: >-
@@ -37,8 +37,9 @@ description: >-
 
   - Disk space: Mainnet needs about 800 GB, Testnet3 over 100 GB. The app warns you when a switch would not fit.
 
-  - Network ports: the app uses the standard Bitcoin ports (8333, 18333, 48333, 38333 and 18444). If another app
-  already uses one of them, for example Bitcoin Node on 8333, Commons Node View cannot start until you stop that app.
+  - Network ports: Mainnet uses port 8334, not the usual 8333, because Umbrel's Bitcoin Node holds 8333. Both apps can
+  run at the same time. The test networks use their standard ports (Testnet3 18333, Testnet4 48333, Signet 38333,
+  Regtest 18444). To accept incoming peers, forward your network's port on your router to your Umbrel.
 
   - The old Commons UI app uses the same web port (3849). If you have it installed, uninstall it before you install
   this one.
@@ -49,20 +50,31 @@ description: >-
   Commons Node View never touches your wallet or funds. Peer locations are country-level and looked up offline on
   your Umbrel. IP Geolocation by DB-IP (https://db-ip.com), licensed under CC BY 4.0.
 releaseNotes: >-
-  The sidebar now shows only Home, Network and Settings. Module pages appear together with their module, and the Logs
-  page can be turned on with a switch in Settings.
+  New: choose, for each network, how much of the chain the node checks fully (assume-valid), so a node catches up
+  much faster.
 
 
-  The Logs page now shows the node's own output.
+  New: block pruning. "Blocks to keep" lets the node keep only the latest blocks and use far less disk space. The Chain
+  tab and the dashboard show what is stored.
 
 
-  Chain size is now measured from the data folder (the node's own figure is only an estimate).
+  Settings is now split into sub-pages, and the sync display shows the validated height, the sync rate and a hint
+  while the node waits for peers.
+
+
+  The app now checks, before downloading the node, whether the computer can run it (some ARM64 devices with a 16 KB
+  kernel page size cannot). You can still try anyway.
+
+
+  Mainnet P2P port moved to 8334. If you forward port 8333 on your router for this app, change the rule from 8333 to
+  8334. Umbrel's own Bitcoin Node can now run at the same time.
+
+
+  Known limitation: a Raspberry Pi 5 cannot run the current official node release until a build with 16 KB page
+  support exists.
 
 
   Existing installs keep their settings and data.
-
-
-  Version 0.2.1 was skipped: it reported the wrong version number inside the app.
 developer: Bitcoin Commons
 website: https://thebitcoincommons.org
 dependencies: []

@@ -35,15 +35,19 @@ Umbrel app  btc-commons-node-view
   `/data`, which is Umbrel's app data folder. App updates and restarts replace the containers, never the data.
 - The web container can restart or update without stopping the node, and the node can crash without taking the console
   down. Stopping the app stops the agent, which asks the node to finish saving first (up to 4 minutes).
-- Only the P2P ports are open to the network (8333 mainnet, 18333 testnet3, 48333 testnet4, 38333 signet, 18444 regtest),
-  because Umbrel fixes ports in `docker-compose.yml` and the network is chosen later in the app. The node's RPC port is
+- Only the P2P ports are open to the network (8334 mainnet, 18333 testnet3, 48333 testnet4, 38333 signet, 18444 regtest),
+  because Umbrel fixes ports in `docker-compose.yml` and the network is chosen later in the app. The agent passes each
+  port to the node (`BLVM_AGENT_P2P_PORT_<NET>`, set in the compose file from `exports.sh`), so the node listens on the
+  port that is published. The node's RPC port is
   not published, and it answers only with a password derived from your Umbrel's seed: the agent writes it into the
   node's own config file before every start, and the console sends the same password.
 - The node runs **inside the agent container**. Restarting that container (or stopping the app) restarts the node, and
   a node that was already running is only taken over again when the agent process restarts inside a running container.
   If you stop the node in the app, it stays stopped after an app restart, an app update or a reboot.
-- If another app already uses one of those ports (Umbrel's Bitcoin Node uses 8333), this app cannot start until you
-  stop that app, whichever network you pick.
+- Mainnet is on **8334**, not 8333, because Umbrel's own Bitcoin Node publishes 8333; both apps can run at the same time.
+  No app of Umbrel's official store publishes any of the five ports (checked 2026-10-13). If another app you installed
+  from somewhere else already uses one of them, this app cannot start until you stop that app, whichever network you
+  pick (Docker refuses to bind a port twice).
 
 Source of the image: [`BTCDecoded/blvm-ui`](https://github.com/BTCDecoded/blvm-ui) (`Dockerfile`, one multi-arch build).
 More notes on what was checked against Umbrel's rules: [`btc-commons-node-view/NOTES.md`](btc-commons-node-view/NOTES.md).
