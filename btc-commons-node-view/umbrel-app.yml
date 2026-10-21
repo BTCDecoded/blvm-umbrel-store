@@ -4,7 +4,7 @@ storage:
   dataRoot: data
 category: bitcoin
 name: Commons Node View
-version: "0.2.3"
+version: "0.2.4"
 tagline: Set up and run a Bitcoin node from one page
 icon: https://raw.githubusercontent.com/BTCDecoded/commons-umbrel-store/main/assets/btc-commons-node-view/icon.svg
 description: >-
@@ -39,7 +39,9 @@ description: >-
 
   - Network ports: Mainnet uses port 8334, not the usual 8333, because Umbrel's Bitcoin Node holds 8333. Both apps can
   run at the same time. The test networks use their standard ports (Testnet3 18333, Testnet4 48333, Signet 38333,
-  Regtest 18444). To accept incoming peers, forward your network's port on your router to your Umbrel.
+  Regtest 18444). Docker publishes all five of those ports on every install. Each one has to be free or the app
+  will not start, whichever network you pick. To accept incoming peers, forward your network's port on your router
+  to your Umbrel.
 
   - The old Commons UI app uses the same web port (3849). If you have it installed, uninstall it before you install
   this one.
@@ -50,6 +52,13 @@ description: >-
   Commons Node View never touches your wallet or funds. Peer locations are country-level and looked up offline on
   your Umbrel. IP Geolocation by DB-IP (https://db-ip.com), licensed under CC BY 4.0.
 releaseNotes: >-
+  Backups skip each network's chain database. Settings, the installed node program, and logs are still included.
+
+
+  All five peer ports (8334, 18333, 48333, 38333, and 18444) are opened on every install. Each one has to be free
+  or the app will not start, even if you only use one network.
+
+
   New: choose, for each network, how much of the chain the node checks fully (assume-valid), so a node catches up
   much faster.
 
@@ -87,6 +96,16 @@ gallery:
   - https://raw.githubusercontent.com/BTCDecoded/commons-umbrel-store/main/assets/btc-commons-node-view/3.jpg
   - https://raw.githubusercontent.com/BTCDecoded/commons-umbrel-store/main/assets/btc-commons-node-view/4.jpg
   - https://raw.githubusercontent.com/BTCDecoded/commons-umbrel-store/main/assets/btc-commons-node-view/5.jpg
+backupIgnore:
+  # Blocks, the UTXO set, and indexes are LMDB trees in heed3/data.mdb. The node is
+  # started with --data-dir ./data and its working directory is networks/<id>, so the
+  # file is data/networks/<id>/data/heed3/data.mdb. console.json and bin/installed.json
+  # are outside these paths.
+  - data/networks/mainnet/data/heed3
+  - data/networks/testnet4/data/heed3
+  - data/networks/testnet/data/heed3
+  - data/networks/signet/data/heed3
+  - data/networks/regtest/data/heed3
 path: ""
 defaultUsername: ""
 defaultPassword: ""
