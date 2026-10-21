@@ -1,3 +1,0 @@
-#!/usr/bin/env bash
-# Pins both services in docker-compose.yml to the multi-arch digest of the published image. Usage: scripts/pin-digest.sh [version]
-set -euo pipefail; cd "$(dirname "$0")/.."; V="${1:-$(sed -n 's/^version: "\(.*\)"/\1/p' umbrel-app.yml)}"; D="${DIGEST:-$(docker buildx imagetools inspect "ghcr.io/btcdecoded/blvm-ui:$V" --format '{{.Manifest.Digest}}')}"; sed -i.bak -E "/TODO-fill-after-blvm-ui-release|# PIN \(run scripts/d; s#^( *image: ghcr.io/btcdecoded/blvm-ui):[^@ ]+(@sha256:[0-9a-f]+)?\$#\1:$V@$D#" docker-compose.yml && rm docker-compose.yml.bak && grep -n 'image:' docker-compose.yml
