@@ -63,9 +63,9 @@ different app ID means a different data folder).
 
 ## Running the image without Umbrel
 
-The 0.2.0 console checks the `Host` header of every request. The old Commons UI 0.1.1 did not, so a compose file written
+The 0.2.3 console checks the `Host` header of every request. The old Commons UI 0.1.1 did not, so a compose file written
 for it answers 403 on every request until `BLVM_UI_ALLOWED_HOSTS` lists the names you use to open it. Umbrel users are
-not affected: the old apps stay pinned to 0.1.1.
+not affected: the old apps stay pinned to 0.1.1. The current pin is `ghcr.io/btcdecoded/blvm-ui:0.2.3@sha256:cf77f454d5835846b57a7af9c95e9c34417143fed65c4db479f989790b8aa3a1`.
 
 ## Layout
 
@@ -76,12 +76,12 @@ btc-commons-<app>/                one folder per app; the folder name is the app
   docker-compose.yml              containers Umbrel runs for the app
   exports.sh                      values Umbrel computes for the app (ports, derived RPC password)
   data/.gitkeep                   persistent data folder, mounted from ${APP_DATA_DIR}/data
-  scripts/pin-digest.sh           fills in the image digest after a release
+scripts/pin-digest.sh             fills in the image digest after a release (not inside the app folder)
 assets/btc-commons-<app>/         icon and gallery images (linked from umbrel-app.yml)
 ```
 
 Everything under an app folder is copied onto every Umbrel that installs it, which is why images live in
-`assets/` instead.
+`assets/` and `scripts/pin-digest.sh` lives next to this README.
 
 ## Editing a listing
 
@@ -91,24 +91,27 @@ All user-facing text and images are in the app's `umbrel-app.yml`:
   breaks are joined. Leave **two** blank lines for a new paragraph, and a blank line before and between list items.
 - `icon`: square SVG (or PNG), 256×256, square corners. Umbrel rounds them.
 - `gallery`: 3–5 screenshots, 1440×900 JPG or PNG, in the order shown.
-- `version`: bump it together with the image tag in `docker-compose.yml`, and fill in `releaseNotes`.
+- `version`: the app version Umbrel compares when it offers an update. Bump it for a new image and for a manifest-only change, and fill in `releaseNotes`. The image tag in `docker-compose.yml` stays on the console release that was actually published.
 
 Images are linked with `raw.githubusercontent.com` URLs, so this repository must be **public** for them (and the
 store itself) to load.
 
 ## Releasing a new version of Commons Node View
 
-1. Tag the console: in `BTCDecoded/blvm-ui`, push a tag like `v0.2.0`. The **Docker image** workflow builds
-   `linux/amd64` + `linux/arm64` and pushes `ghcr.io/btcdecoded/blvm-ui:0.2.0`. The run summary shows the digest.
-2. In this repository, run `btc-commons-node-view/scripts/pin-digest.sh` (or `pin-digest.sh 0.2.1`). It sets both
-   services to `image: ghcr.io/btcdecoded/blvm-ui:<version>@sha256:<digest>` (the multi-arch index digest).
-3. In `btc-commons-node-view/umbrel-app.yml`, set `version` to match and write `releaseNotes`.
+1. Tag the console: in `BTCDecoded/blvm-ui`, push a tag like `v0.2.3`. The **Docker image** workflow builds
+   `linux/amd64` + `linux/arm64` and pushes `ghcr.io/btcdecoded/blvm-ui:0.2.3`. The run summary shows the digest.
+2. In this repository, run `scripts/pin-digest.sh 0.2.3`. It sets both
+   services to `image: ghcr.io/btcdecoded/blvm-ui:<tag>@sha256:<digest>` (the multi-arch index digest) and exits
+   if that digest is not `sha256:` plus 64 hex digits. With no argument it keeps the tag already in
+   `docker-compose.yml`.
+3. In `btc-commons-node-view/umbrel-app.yml`, set `version` and write `releaseNotes`. `version` is the app
+   version. It can move without a new image tag.
 4. Commit and push. Umbrels that added the store will offer the update.
 
 You can check the digest and both architectures by hand with:
 
 ```bash
-docker buildx imagetools inspect ghcr.io/btcdecoded/blvm-ui:0.2.0
+docker buildx imagetools inspect ghcr.io/btcdecoded/blvm-ui:0.2.3
 ```
 
 A new BLVM node release does **not** need a store release: the app downloads it when you ask.
